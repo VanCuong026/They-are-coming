@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - ZeroPoint
+  - TurnLeft
+  - TurnRight
+  - Stop
+  - KnifeItem
+  - GrenadeItem
+  - ShurikenItem
+  - CrossBowItem
+  - AK74item
+  - Sniperitem
+  - Trap
+  - SpawnerItem
+  - Enemy
+  - Bullet
+  - ChangeDestination1
+  - ChangeDestination2
+  - ChangeDestination3
+  - EnemySpawner
+  - EnemySpawner1
+  - x2
+  - +25
+  - x3
+  - +30
+  - MovePoint
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Floor
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

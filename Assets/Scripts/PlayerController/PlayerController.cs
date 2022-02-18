@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody myBody;
+    public Vector3 _DefencePos = Vector3.zero;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +15,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 temp = Vector3.zero - transform.localPosition;
-        myBody.velocity = Vector3.zero;
-        
+        if (_DefencePos != Vector3.zero)
+        {
+            myBody.velocity = _DefencePos - transform.position;
+        }
+        else
+        {
+            //myBody.velocity = Vector3.zero;
+            myBody.velocity = GameObject.Find("MovePoint").gameObject.transform.position - transform.position;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -25,7 +32,25 @@ public class PlayerController : MonoBehaviour
             gameObject.SetActive(false);
             Pooling.instance._Push("Player", gameObject);
         }
+        if (other.tag == "Sniperitem")
+        {
+            ZeroPointMove.instance._WeaponID =1;
+            Destroy(other.gameObject);
+        }
+        else if (other.tag == "CrossBowItem")
+        {
+            ZeroPointMove.instance._WeaponID = 2;
+            Destroy(other.gameObject);
+        }
+        else if (other.tag == "ShurikenItem")
+        {
+            ZeroPointMove.instance._WeaponID = 4;
+            Destroy(other.gameObject);
+        }
+        else if (other.tag == "KnifeItem")
+        {
+            ZeroPointMove.instance._WeaponID = 3;
+            Destroy(other.gameObject);
+        }
     }
-
-
 }

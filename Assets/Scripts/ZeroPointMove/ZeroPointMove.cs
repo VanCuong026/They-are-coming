@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,32 +8,24 @@ public class ZeroPointMove : MonoBehaviour
     public string _MoveDirection = "Straight",_Direction = "+Z";
     float _PlayerSpeed = 5f, _RotationSpeed = 100, _RotateAngle = 0;
     Vector3 RotatePoint;
+    public int _WeaponID = 0;
+    GameObject _MovePoint;
+    public int _NumberOfPlayerisAlive;
+    private int _PlayerCounting,_PositionCounting;
+    Vector3[] _DefPos=new Vector3[100];
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        _PositionCal();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_MoveDirection == "Straight")
-        {
-            _GoStraight();
-        }
-        else if(_MoveDirection == "TurnLeft")
-        {
-            _TurnLeft();
-        }
-        else if (_MoveDirection == "TurnRight")
-        {
-            _TurnRight();
-        }
-        else if (_MoveDirection == "Stop")
-        {
-            PlayerMove.instance._Stop = true;
-        }
-        
+        _TheNumberOfPlayerisAlive();
+        Debug.Log(_NumberOfPlayerisAlive);
+        if (_NumberOfPlayerisAlive > 0&& _MoveDirection != "Stop") MoveFollowLine();
     }
 
     private void OnTriggerExit(Collider other)
@@ -46,7 +38,6 @@ public class ZeroPointMove : MonoBehaviour
                 _FindRotatePoint();
                 _RotateAngle = 90;
             }
-
             else if (other.tag == "TurnRight")
             {
                 _MoveDirection = "TurnRight";
@@ -57,9 +48,9 @@ public class ZeroPointMove : MonoBehaviour
         if (other.tag == "Stop")
         {
             _MoveDirection = "Stop";
+            _MovetoDefPos();
         }
     }
-    
     void _GoStraight()
     {
         Vector3 temp = transform.position;
@@ -182,5 +173,68 @@ public class ZeroPointMove : MonoBehaviour
                 _Direction = "-Z";
         }
         _MoveDirection = "Straight";
+    }
+
+    void MoveFollowLine()
+    {
+        if (_MoveDirection == "Straight")
+        {
+            _GoStraight();
+        }
+        else if (_MoveDirection == "TurnLeft")
+        {
+            _TurnLeft();
+        }
+        else if (_MoveDirection == "TurnRight")
+        {
+            _TurnRight();
+        }
+        else if (_MoveDirection == "Stop")
+        {
+            PlayerMove.instance._Stop = true;
+        }
+    }
+
+    public void _TheNumberOfPlayerisAlive()
+    {
+        _MovePoint = GameObject.Find("MovePoint");
+        _PlayerCounting = 0;
+        for (int i = 0; i < _MovePoint.transform.childCount; i++) //Xét từng Player trong MovePoint.
+        {
+            if (_MovePoint.transform.GetChild(i).gameObject.activeSelf) // Nếu có bất kỳ Player nào đang Active thì ++
+            {
+                _PlayerCounting++;
+            }
+        }
+        _NumberOfPlayerisAlive = _PlayerCounting;
+    }
+
+    void _PositionCal()
+    {
+        _PositionCounting = 0;
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                _DefPos[i*9+j] = new Vector3(75f + i * 0.8f, -0.05f, 56.8f + j * 0.8f);
+                _PositionCounting++;
+            }
+        }
+    }
+
+    void _MovetoDefPos()
+    {
+        _TheNumberOfPlayerisAlive();
+        int i = 0;
+        for (int j = 0; j < _MovePoint.transform.childCount; j++)
+        {
+            if (_MovePoint.transform.GetChild(j).gameObject.activeSelf)
+            {// Nếu có bất kỳ Player nào đang Active thì ++
+                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>().gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
+                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>()._DefencePos = _DefPos[i];
+                i++;
+                continue;
+            }
+        }
     }
 }

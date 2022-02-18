@@ -32,11 +32,11 @@ public class PlayerSpawner : MonoBehaviour
         
         if (other.tag == "x2")
         {
-            _SpawnQuatity = 1;
+            _SpawnQuatity = ZeroPointMove.instance._NumberOfPlayerisAlive;
         }
         else if(other.tag == "x3")
         {
-            _SpawnQuatity = 2;
+            _SpawnQuatity = ZeroPointMove.instance._NumberOfPlayerisAlive * 2;
         }
         else if (other.tag == "+25")
         {

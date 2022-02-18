@@ -18,17 +18,17 @@ public class SniperController : MonoBehaviour
     {
         GameObject Bullet = GameObject.Find("Bullet");
         GameObject ZeroPoint = GameObject.Find("ZeroPoint");
-        _TimeRandom = Random.Range(0.2f, 0.5f);
+        _TimeRandom = Random.Range(1f, 5f);
         _TimeCounting += Time.deltaTime;
         if (_TimeCounting > _TimeRandom)
         {
             GameObject gob = Pooling.instance._Pull("SniperBullet");
+            gob.SetActive(true);
             gob.GetComponent<Rigidbody>().velocity=Vector3.zero;
             gob.GetComponent<Rigidbody>().AddForce(-ZeroPointMove.instance.transform.forward * 500);
             gob.transform.position = _SpawnerPosition.transform.position;
             gob.transform.rotation = Quaternion.Euler(0, 90f + ZeroPoint.transform.rotation.eulerAngles.y, 90f + ZeroPoint.transform.rotation.eulerAngles.z);
             gob.transform.parent = Bullet.transform;
-            //GameObject Temporary_Arrow = Instantiate(_Bullet, _SpawnerPosition.transform.position, Quaternion.Euler(90f + _zeroPoint.transform.rotation.eulerAngles.x, 90f + _zeroPoint.transform.rotation.eulerAngles.y, 90f + _zeroPoint.transform.rotation.eulerAngles.z));
             _TimeCounting = 0;
         }
     }

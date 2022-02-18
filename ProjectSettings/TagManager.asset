@@ -28,6 +28,7 @@ TagManager:
   - x3
   - +30
   - MovePoint
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -35,7 +36,7 @@ TagManager:
   - Floor
   - Water
   - UI
-  - 
+  - Block
   - 
   - 
   - 

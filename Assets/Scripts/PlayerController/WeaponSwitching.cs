@@ -1,5 +1,5 @@
-//using System.Collections;
-//using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponSwitching : MonoBehaviour
@@ -15,13 +15,13 @@ public class WeaponSwitching : MonoBehaviour
     void Start()
     {
         WeaponSwitch();
-        //_anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_PreviousWeapon!= _WeaponCode)
+        _WeaponCode = ZeroPointMove.instance._WeaponID;
+        if (_PreviousWeapon!= _WeaponCode)
         {
             WeaponSwitch();
         }
@@ -60,6 +60,5 @@ public class WeaponSwitching : MonoBehaviour
             }
             i++;
         }
-
     }
 }

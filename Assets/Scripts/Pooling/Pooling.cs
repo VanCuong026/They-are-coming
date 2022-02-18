@@ -35,6 +35,7 @@ public class Pooling : MonoBehaviour
     {
         string path = "";
         if (key == "Enemy") path = "Prefabs/Enemy";
+        if (key == "Arrow") path = "Prefabs/Arrow";
         if (key == "SniperBullet") path = "Prefabs/SniperBullet";
         if (key == "TacticalKnife_Fade") path = "Prefabs/TacticalKnife_Fade";
         if (key == "Shuriken2") path = "Prefabs/Shuriken2";

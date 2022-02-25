@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (_DefencePos != Vector3.zero)
+        if (_DefencePos != Vector3.zero) //Sau khi gán giá trị thì _DefencePos sẽ khác Vector 0. Từ đó hàm if bắt đầu được thực hiện. Nó sẽ cho Player 1 vận tốc để chạy về vị trí Defense Position đã được tính toán từ trước 
         {
             myBody.velocity = _DefencePos - transform.position;
         }

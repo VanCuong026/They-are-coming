@@ -114,7 +114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ArrowForce: 700
-  _TimeCounting: 0
 --- !u!136 &2037860532262206494
 CapsuleCollider:
   m_ObjectHideFlags: 0

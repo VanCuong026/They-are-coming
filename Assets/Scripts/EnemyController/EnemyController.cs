@@ -5,21 +5,25 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public float _EnemyToPlayerDistance = 50, _NearestPlayerDistance;
+    private float _EnemyToPlayerDistance = 50, _TimeCounting = 0, _NearestPlayerDistance;
     private Animator _anim;
     public NavMeshAgent agent;
-    int _NextDestination,_NearestPlayerIndex;
-    public Vector3[] _Destination;
+    private int _NextDestination=0,_NearestPlayerIndex;
     public bool _isAlive=true;
-    GameObject _MovePoint;
-    Vector3[] _PlayerList;
-    public Vector3 _Desti;
-    float _TimeCounting = 0;
+    private GameObject _MovePoint, _DesireDestination;
+    private Vector3[] _DestinationList;
+    private Vector3[] _PlayerList;
     // Start is called before the first frame update
     void Start()
     {
         _anim = GetComponent<Animator>();
-        _NextDestination = 1;
+        _NextDestination = 0;
+        _DesireDestination = GameObject.Find("DesireDestinations");
+        _DestinationList = new Vector3[_DesireDestination.transform.childCount];
+        for (int i = 0; i < _DesireDestination.transform.childCount; i++)
+        {
+            _DestinationList[i] = _DesireDestination.transform.GetChild(i).transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -33,10 +37,16 @@ public class EnemyController : MonoBehaviour
             if (_NearestPlayerDistance < _EnemyToPlayerDistance) //Nếu có Player nằm trong bán kính định sẵn _EnemyToPlayerDistance thì tìm xem con nào gần nhất rồi xông vào con đó
             {
                 agent.SetDestination(_PlayerList[_NearestPlayerIndex]);
-                _Desti = _PlayerList[_NearestPlayerIndex];
             }
             else //Nếu ko có con nào nằm trong bán kính định sẵn thì chạy theo đường đã định sẵn
-                agent.SetDestination(_Destination[_NextDestination]);
+            {
+                agent.SetDestination(_DestinationList[_NextDestination]);
+                if(Vector3.Distance(transform.position, _DestinationList[_NextDestination]) <= 3f)
+                {
+                    if(_NextDestination<_DesireDestination.transform.childCount-1)
+                        _NextDestination++;
+                }
+            }    
         }
         else //Enemy đã chết hoặc không có con Player nào đang Active thì cho Enemy dừng lại
         {
@@ -55,20 +65,7 @@ public class EnemyController : MonoBehaviour
             gameObject.GetComponent<NavMeshAgent>().radius = 0.01f;
             gameObject.GetComponent<Collider>().enabled = false;
             _isAlive = false;
-        }
-        if (other.tag == "ChangeDestination1")
-        {
-            _NextDestination = 2;
-        }else if(other.tag == "ChangeDestination2")
-        {
-            _NextDestination = 3;
-        }else if (other.tag == "ChangeDestination3")
-        {
-            _NextDestination = 4;
-        }
-        else if (other.tag == "ChangeDestination4")
-        {
-            _NextDestination = 5;
+            _TimeCounting = 0;
         }
     }
     void FindNearestPlayer()

@@ -285,8 +285,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: 9.5, y: 0, z: 0}
 --- !u!1 &113425330
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,8 +380,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: -9.5, y: 0, z: 0}
 --- !u!1 &263381730
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,8 +955,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: -9.5, y: 0, z: 0}
 --- !u!1 &925941465
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,8 +2205,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: -9.5, y: 0, z: 0}
 --- !u!1 &1470552214037323662
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,8 +3501,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: 9.5, y: 0, z: 0}
 --- !u!1 &1470552215057852603
 GameObject:
   m_ObjectHideFlags: 0
@@ -4783,8 +4783,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: -9.5, y: 0, z: 0}
 --- !u!1 &1470552215748501610
 GameObject:
   m_ObjectHideFlags: 0
@@ -4878,8 +4878,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: 9.5, y: 0, z: 0}
 --- !u!1 &1470552215812883339
 GameObject:
   m_ObjectHideFlags: 0
@@ -5069,8 +5069,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 20, y: 10, z: 1}
+  m_Center: {x: -9.5, y: 0, z: 0}
 --- !u!1 &1470552215849123686
 GameObject:
   m_ObjectHideFlags: 0

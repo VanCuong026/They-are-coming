@@ -6,32 +6,33 @@ public class WeaponSwitching : MonoBehaviour
 {
     int _WeaponCode = 0;
     int _PreviousWeapon;
-    [SerializeField]
-    private Animator _anim;
-
-    [SerializeField]
-    private GameObject _Player;
+    [SerializeField] private Animator _anim;
+    [SerializeField] private GameObject _Player;
     // Start is called before the first frame update
     void Start()
     {
-        WeaponSwitch();
+        //if (GameManager.instance.IsPlaying)
+            WeaponSwitch();
+        _anim.SetBool("BackWard", false);
     }
-
     // Update is called once per frame
     void Update()
     {
-        _WeaponCode = ZeroPointMove.instance._WeaponID;
-        if (_PreviousWeapon!= _WeaponCode)
+        if (GameManager.instance.IsPlaying)
         {
-            WeaponSwitch();
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _WeaponCode++;
-            if (_WeaponCode >= 5)
-                _WeaponCode = 0;
-        }
+            _anim.SetBool("BackWard", true);
+            _WeaponCode = ZeroPointMove.instance._WeaponID;
+            if (_PreviousWeapon != _WeaponCode)
+            {
+                WeaponSwitch();
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _WeaponCode++;
+                if (_WeaponCode >= 5)
+                    _WeaponCode = 0;
+            }
+        }else _anim.SetBool("BackWard", false);
     }
 
     void WeaponSwitch()

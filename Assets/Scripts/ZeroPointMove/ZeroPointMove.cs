@@ -5,13 +5,13 @@ using UnityEngine;
 public class ZeroPointMove : MonoBehaviour
 {
     public static ZeroPointMove instance;
-    public string _MoveDirection = "Straight",_Direction = "+Z";
-    float _PlayerSpeed = 5f, _RotationSpeed = 100, _RotateAngle = 0;
+    [HideInInspector]public string _MoveDirection = "Straight",_Direction = "+Z";
+    [HideInInspector]public int _NumberOfPlayerisAlive=1;
+    float _PlayerSpeed = 5f, _RotationSpeed = 200f, _RotateAngle = 0;
     Vector3 RotatePoint;
-    public int _WeaponID = 0;
-    GameObject _MovePoint;
-    public int _NumberOfPlayerisAlive;
-    private int _PlayerCounting,_PositionCounting;
+    Transform _DefensePosition;
+    [HideInInspector]public int _WeaponID = 0, _PlayerCounting, _PositionCounting;
+    private GameObject _MovePoint;
     Vector3[] _DefPos=new Vector3[100];
     // Start is called before the first frame update
     void Start()
@@ -23,9 +23,11 @@ public class ZeroPointMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _TheNumberOfPlayerisAlive();
-        Debug.Log(_NumberOfPlayerisAlive);
-        if (_NumberOfPlayerisAlive > 0&& _MoveDirection != "Stop") MoveFollowLine();
+        if (GameManager.instance.IsPlaying)
+        {
+            _TheNumberOfPlayerisAlive();
+            if (_NumberOfPlayerisAlive > 0 && _MoveDirection != "Stop") MoveFollowLine();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -73,11 +75,10 @@ public class ZeroPointMove : MonoBehaviour
         }
         else
         {
-            transform.RotateAround(RotatePoint, Vector3.up, -_RotateAngle);
+            transform.RotateAround(RotatePoint, Vector3.up, _RotateAngle);
             _FindTheDirection();
         }
     }
-
     void _TurnRight()
     {
         if (_RotateAngle > _RotationSpeed * 0.02f)
@@ -87,11 +88,12 @@ public class ZeroPointMove : MonoBehaviour
         }
         else
         {
-            transform.RotateAround(RotatePoint, Vector3.up, _RotateAngle);
+            transform.RotateAround(RotatePoint, Vector3.up, -_RotateAngle);
             _FindTheDirection();
         }
     }
 
+    #region Find Rotation Point
     void _FindRotatePoint()
     {
         if(_Direction == "+Z")
@@ -147,7 +149,9 @@ public class ZeroPointMove : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Find Direction
     void _FindTheDirection()
     {
         if(_MoveDirection == "TurnLeft")
@@ -174,7 +178,9 @@ public class ZeroPointMove : MonoBehaviour
         }
         _MoveDirection = "Straight";
     }
+    #endregion
 
+    #region Follow Line
     void MoveFollowLine()
     {
         if (_MoveDirection == "Straight")
@@ -194,7 +200,7 @@ public class ZeroPointMove : MonoBehaviour
             PlayerMove.instance._Stop = true;
         }
     }
-
+    #endregion
     public void _TheNumberOfPlayerisAlive()
     {
         _MovePoint = GameObject.Find("MovePoint");
@@ -208,30 +214,44 @@ public class ZeroPointMove : MonoBehaviour
         }
         _NumberOfPlayerisAlive = _PlayerCounting;
     }
-
-    void _PositionCal()
+    #region Calculate the Defense Position
+    void _PositionCal() //Tính toán vị trí từng điểm để sắp xếp Player
     {
         _PositionCounting = 0;
-        for (int i = 0; i < 11; i++)
+        _DefensePosition = GameObject.Find("DefensePosition").transform; //Lấy vị trí của GameObject
+        if (_DefensePosition.rotation.eulerAngles.y == 90) //Tùy vào hướng của map mà thay đổi cách đặt vị trí
         {
-            for (int j = 0; j < 9; j++)
+            for (int i = 0; i < 11; i++)
             {
-                _DefPos[i*9+j] = new Vector3(75f + i * 0.8f, -0.05f, 56.8f + j * 0.8f);
-                _PositionCounting++;
+                for (int j = 0; j < 9; j++)
+                { //Tính toán vị trí đặt player. Mỗi player cách nhau 1 khoảng 0.8
+                    _DefPos[i * 9 + j] = new Vector3(_DefensePosition.position.x + i * 0.8f, -0.05f, _DefensePosition.position.z + j * 0.8f);
+                    _PositionCounting++;
+                }
+            }
+        }else if(_DefensePosition.rotation.eulerAngles.y == 0)
+        {
+            for (int i = 0; i < 11; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    _DefPos[i * 9 + j] = new Vector3(_DefensePosition.position.x + j * 0.8f, -0.05f, _DefensePosition.position.z + i * 0.8f);
+                    _PositionCounting++;
+                }
             }
         }
     }
-
+    #endregion
     void _MovetoDefPos()
     {
-        _TheNumberOfPlayerisAlive();
+        _TheNumberOfPlayerisAlive(); //Lấy số lượng player đang sống
         int i = 0;
-        for (int j = 0; j < _MovePoint.transform.childCount; j++)
+        for (int j = 0; j < _MovePoint.transform.childCount; j++) //Xét từng đối tượng con nằm trong MovePoint
         {
-            if (_MovePoint.transform.GetChild(j).gameObject.activeSelf)
-            {// Nếu có bất kỳ Player nào đang Active thì ++
-                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>().gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
-                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>()._DefencePos = _DefPos[i];
+            if (_MovePoint.transform.GetChild(j).gameObject.activeSelf) //Nếu có đối tượng nào đang Active thì nghĩa là gameObject đang còn sống
+            {// Nếu có bất kỳ Player nào đang Active thì 
+                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>().gameObject.GetComponent<CapsuleCollider>().isTrigger = true; //Thay đổi Collider trong Player thành Is trigger để có thể di chuyển vào vị trí Defense Position
+                _MovePoint.transform.GetChild(j).gameObject.GetComponent<PlayerController>()._DefencePos = _DefPos[i]; //Trong mỗi con Player đang Active thì lấy ra Script PlayerController rồi gán cho biến _DefencePos vị trí đã được tính toán từ trước
                 i++;
                 continue;
             }

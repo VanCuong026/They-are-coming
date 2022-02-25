@@ -5,22 +5,15 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public int _SpawnerAmount = 300;
+    public static EnemySpawner instance;
+    public int _SpawnerAmount = 300,_EnemyAmount = 1;
     public int _EachTimeSpawnerAmount = 20;
-    [SerializeField]
-    private GameObject _EnemyGroup;
-    [SerializeField]
-    private GameObject _EnemySpawner;
+    [SerializeField] private GameObject _EnemyGroup;
+    [SerializeField] private GameObject _EnemySpawner;
     bool _StartSpawning = false,_SpawnerSwitch=false;
     float _TimeCounting = 0;
+    private int _EnemyCounting = 0;
     GameObject _MovePoint;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (_SpawnerAmount > 0 && _StartSpawning&& ZeroPointMove.instance._NumberOfPlayerisAlive>0)
@@ -38,6 +31,13 @@ public class EnemySpawner : MonoBehaviour
         {
             _StartSpawning = true;
         }
+        EnemyCounting();
+        if(_EnemyAmount==0)
+        {
+            GameManager.instance.IsPlaying = false;
+            GameManager.instance.IsWin = true;
+            Debug.Log("IsWin=" + GameManager.instance.IsWin);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -45,7 +45,12 @@ public class EnemySpawner : MonoBehaviour
         {
             _StartSpawning = true;
             _SpawnerSwitch = true;
-        } else if(other.CompareTag("MovePoint") &&this.name == "EnemySpawner (1)")
+        }else if(other.CompareTag("MovePoint") &&this.name == "EnemySpawner (1)")
+        {
+            _StartSpawning = true;
+            _SpawnerSwitch = true;
+        }
+        else if (other.CompareTag("MovePoint") && this.name == "EnemySpawner (2)")
         {
             _StartSpawning = true;
             _SpawnerSwitch = true;
@@ -65,5 +70,15 @@ public class EnemySpawner : MonoBehaviour
         gob.transform.localPosition = temp;
         gob.transform.parent = _EnemyGroup.transform;
         _SpawnerAmount--;
+    }
+
+    void EnemyCounting()
+    {
+        _EnemyCounting = 0;
+        for (int i = 0; i < _EnemyGroup.transform.childCount; i++)
+        {
+            if (_EnemyGroup.transform.GetChild(i).gameObject.activeSelf) _EnemyCounting++;
+        }
+        _EnemyAmount = _EnemyCounting;
     }
 }

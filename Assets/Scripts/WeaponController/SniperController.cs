@@ -16,20 +16,23 @@ public class SniperController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject Bullet = GameObject.Find("Bullet");
-        GameObject ZeroPoint = GameObject.Find("ZeroPoint");
-        _TimeRandom = Random.Range(1f, 5f);
-        _TimeCounting += Time.deltaTime;
-        if (_TimeCounting > _TimeRandom)
+        if (GameManager.instance.IsPlaying)
         {
-            GameObject gob = Pooling.instance._Pull("SniperBullet");
-            gob.SetActive(true);
-            gob.GetComponent<Rigidbody>().velocity=Vector3.zero;
-            gob.GetComponent<Rigidbody>().AddForce(-ZeroPointMove.instance.transform.forward * 500);
-            gob.transform.position = _SpawnerPosition.transform.position;
-            gob.transform.rotation = Quaternion.Euler(0, 90f + ZeroPoint.transform.rotation.eulerAngles.y, 90f + ZeroPoint.transform.rotation.eulerAngles.z);
-            gob.transform.parent = Bullet.transform;
-            _TimeCounting = 0;
+            GameObject Bullet = GameObject.Find("Bullet");
+            GameObject ZeroPoint = GameObject.Find("ZeroPoint");
+            _TimeRandom = Random.Range(1f, 5f);
+            _TimeCounting += Time.deltaTime;
+            if (_TimeCounting > _TimeRandom)
+            {
+                GameObject gob = Pooling.instance._Pull("SniperBullet");
+                gob.SetActive(true);
+                gob.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                gob.GetComponent<Rigidbody>().AddForce(-ZeroPointMove.instance.transform.forward * 500);
+                gob.transform.position = _SpawnerPosition.transform.position;
+                gob.transform.rotation = Quaternion.Euler(0, 90f + ZeroPoint.transform.rotation.eulerAngles.y, 90f + ZeroPoint.transform.rotation.eulerAngles.z);
+                gob.transform.parent = Bullet.transform;
+                _TimeCounting = 0;
+            }
         }
     }
 }

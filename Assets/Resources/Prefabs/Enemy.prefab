@@ -364,13 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d24ebeead203f84f8aef3c7be8437cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnemyToPlayerDistance: 15
-  _NearestPlayerDistance: 0
   agent: {fileID: 6629317700339889224}
-  _Destination:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 60}
-  - {x: 70, y: 0, z: 60}
+  _isAlive: 1
 --- !u!195 &6629317700339889224
 NavMeshAgent:
   m_ObjectHideFlags: 0
